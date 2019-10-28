@@ -8,31 +8,41 @@ exports.command = 'check-no-estimate-issues <ownerName> <repoName>';
 exports.desc = 'estimateが設定されていないIssueがないか確認する';
 exports.builder = {};
 exports.handler = async function(argv) {
-  const filteredIssues = await runner.noEstimateIssues(argv.ownerName, argv.repoName);
-	//console.log('aa %s bb', argv.repoName);
-  const urls = _.map(filteredIssues, (issue) => issue.getHtmlUrl());
+  const urls = await fetchUrls();
+  console.log(urls);
 
-  const questions = [
-    {
-      type: 'list',
-      name: 'selectedUrl',
-      message: 'select url',
-      choices: _.concat(urls, new inquirer.Separator(), 'QUIT'),
-    }
-  ];
 
-  itr();
+  await itr(urls);
 
-  //let quitFlag = false;
 
-  function itr() {
-    inquirer.prompt(questions).then(answers => {
-      if (answers.selectedUrl === 'QUIT') {
-        //quitFlag = true;
-        return;
+  async function fetchUrls() {
+    const filteredIssues = await runner.noEstimateIssues(argv.ownerName, argv.repoName);
+    return _.map(filteredIssues, (issue) => issue.getHtmlUrl());
+  }
+
+  async function itr(urls) {
+    const questions = [
+      {
+        type: 'list',
+        name: 'selectedUrl',
+        message: 'select url',
+        choices: _.concat(urls, new inquirer.Separator(), 'UPDATE', 'QUIT'),
       }
-      opener(answers.selectedUrl);
-      itr();
-    });
+    ];
+    const answers = await inquirer.prompt(questions);
+
+    if (answers.selectedUrl === 'QUIT') {
+      return;
+    }
+
+    if (answers.selectedUrl === 'UPDATE') {
+      const newUrls = await fetchUrls();
+      await itr(newUrls);
+      return;
+    }
+
+    opener(answers.selectedUrl);
+
+    await itr(urls);
   }
 };
