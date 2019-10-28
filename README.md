@@ -97,5 +97,6 @@ Closed
 
 # 利用準備
 
+1. このリポジトリをクローン
 1. Githubのtokenを `./config/token/github` として置く
-2. ZenHubのtokenを `./config/token/zenhub` として置く
+1. ZenHubのtokenを `./config/token/zenhub` として置く
