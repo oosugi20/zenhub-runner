@@ -9,5 +9,4 @@ exports.handler = async function(argv) {
     argv.repoName,
     argv.issueNumber
   );
-  //console.log(res.data.issues);
 };
