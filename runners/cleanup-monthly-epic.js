@@ -39,10 +39,12 @@ module.exports = async function(ownerName, repoName, issueNumber) {
     const removeIssues = [];
     const addIssues = [];
 
-    childEpic.zenhubEpicData.issues.forEach(function(removeIssue) {
-      const hasInChilds = monthlyEpic.hasInChilds(removeIssue.issue_number);
+    const childEpicChilds = childEpic.getChilds();
+    childEpicChilds.forEach(function(issue) {
+      const hasInChilds = monthlyEpic.hasInChilds(issue.getNumber());
       if (hasInChilds) {
-        removeIssues.push(removeIssue); // issueのdata全部入れてるけど必要なのは repo_id issue_numberだけ
+        const removeIssueData = 
+        removeIssues.push(issue.toDataForRemove());
       }
     });
 
