@@ -1,0 +1,21 @@
+{
+  "name": "zenhub-runner",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "zenhub-runner": "./bin/zenhub-runner.js"
+  },
+  "author": "Makoto OOSUGI <oosugi20@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "dependencies": {
+    "@octokit/rest": "^16.34.0",
+    "lodash": "^4.17.15",
+    "yargs": "^14.2.0"
+  }
+}
