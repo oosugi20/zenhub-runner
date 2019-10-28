@@ -90,3 +90,8 @@ Closed
 中EpicがもつIssue群がすべて月内にcloseされているかどうか確認する。
 すべて月内に閉じられている場合、子Issueからは月時まとめEpicへの関連付けを外す。
 
+
+# 利用準備
+
+1. Githubのtokenを `./config/token/github` として置く
+2. ZenHubのtokenを `./config/token/zenhub` として置く
