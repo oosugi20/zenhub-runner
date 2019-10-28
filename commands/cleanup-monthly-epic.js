@@ -9,14 +9,29 @@ exports.handler = async function(argv) {
   cliSpinner.setSpinnerString('⢹⢺⢼⣸⣇⡧⡗⡏');
   cliSpinner.start();
 
-  const res = await runner.cleanupMonthlyEpic(
+  const results = await runner.cleanupMonthlyEpic(
     argv.ownerName,
     argv.repoName,
     argv.issueNumber
   );
-  
+
   cliSpinner.stop(true);
 
-  // TODO 変更した一覧のログ
+  if (!results.length) {
+    console.log('変更されたIssueなし');
+    return;
+  }
+
+  console.log(`
+以下のIssueは、月時まとめEpic #${argv.issueNumber} 内のcloseされた子Epicに含まれるため、
+#${argv.issueNumber}への関連付けを外しました。
+`);
+
+  results.forEach(function(result) {
+    result.removedIssues.forEach(function(removedIssue) {
+      const url = removedIssue.getHtmlUrl();
+      console.log(url);
+    });
+  });
 
 };
