@@ -1,10 +1,8 @@
-console.log('zenhub-runner');
-
 const Issues = require('./lib/Issues');
 
 module.exports = {
-  noEstimateIssues: async function() {
-    const myIssues = new Issues();
+  noEstimateIssues: async function(ownerName, repoName) {
+    const myIssues = new Issues(ownerName, repoName);
     await myIssues.fetch();
 
     return myIssues.filterClosedAndNoEstimate();
