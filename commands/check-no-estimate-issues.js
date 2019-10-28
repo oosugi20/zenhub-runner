@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const inquirer = require('inquirer');
 const opener = require('opener');
+const CliSpinner = require('cli-spinner').Spinner;
+const chalk = require('chalk');
 
 const runner = require('../main.js');
 
@@ -11,8 +13,18 @@ exports.command = 'check-no-estimate-issues <ownerName> <repoName>';
 exports.desc = 'estimateが設定されていないIssueがないか確認する';
 exports.builder = {};
 exports.handler = async function(argv) {
+  const cliSpinner = new CliSpinner('%s processing...');
+  cliSpinner.setSpinnerString('⢹⢺⢼⣸⣇⡧⡗⡏');
+  cliSpinner.start();
+
   const urls = await fetchUrls();
-  console.log(urls);
+  cliSpinner.stop(true);
+
+  console.log(chalk.bold('=== No estimate issues ============================'));
+  urls.forEach(function(url) {
+    console.log(chalk.blue(url));
+  });
+  console.log(chalk.bold('==================================================='));
 
 
   await itr(urls);
@@ -39,7 +51,9 @@ exports.handler = async function(argv) {
     }
 
     if (answers.selectedUrl === UPDATE_KEY) {
+      cliSpinner.start();
       const newUrls = await fetchUrls();
+      cliSpinner.stop(true);
       await itr(newUrls);
       return;
     }
