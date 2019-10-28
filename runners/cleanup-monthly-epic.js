@@ -1,4 +1,4 @@
-const Issues = require('./Issues');
+const Issues = require('../lib/Issues');
 
 
 module.exports = async function(ownerName, repoName, issueNumber) {
