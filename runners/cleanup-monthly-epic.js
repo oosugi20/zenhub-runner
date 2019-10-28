@@ -61,7 +61,7 @@ module.exports = async function(ownerName, repoName, issueNumber) {
     // 全部今月でcloseされてるなら、子からmonthlyEpicはずす
     // 子は親Epic情報を持っていないので、
     // monthlyEpic側から子の関連付けを外す
-    promises.push(monthlyEpic.updateZenhubAssociation({ removeIssues, addIssues }));
+    promises.push(monthlyEpic.updateEpicAssociation({ removeIssues, addIssues }));
   });
 
   const result = await Promise.all(promises);
