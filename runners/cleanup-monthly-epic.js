@@ -15,23 +15,29 @@ module.exports = async function(ownerName, repoName, issueNumber) {
   //
   // ひとまず、いちリポジトリの月時まとめを想定し、
   // 月時まとめEpicの子Issuesに別のリポジトリのIssueが入らない想定とする。
-  //
-  // TODO また、先月のIssueとかがあると、取得できてない気がする
   const childEpics = monthlyEpic.getChildEpics();
 
   const promises = [];
 
   // 先に子に親の情報紐付けておいた方がいい？
   childEpics.forEach(function(childEpic) {
+    // closeedなIssueだけ操作。openedなら抜ける
     if (childEpic.hasOpenedChilds()) {
       return;
     }
 
-    // openedがないなら === 全部閉じられてるなら、
-    // childEpic自体にmonthlyEpicを紐付け ==> 先月のIssueとか持ってたら？
-    // childEpic自体をclose => closeは手動でやらせたほうがいいかも
-    // childEpicのchildsからmonthlyEpicを外す
-
+    // 現状 `Issues` で取得しているデータは今月分のみ。
+    // そのため、
+    //
+    // #1 yyyy年mm月まとめ
+    // #2 zz画面作成
+    // #3 zz画面: aa機能作成
+    // #4 zz画面: bb機能作成
+    //
+    // とあった場合に、#4だけ先月にcloseしており、他すべて今月のまとめIssueである#1に関連付けていた場合、
+    // 先月のIssueのデータはgetできない。
+    // ただ、この場合、ここで操作はしたくない、すると先月分が今月分とカウントされてしまうので、
+    // 今月以外のIssueを持つchildEpicであれば、なにもしないで抜ける。
     if (childEpic.hasChildsOtherThanThisMonth()) {
       return;
     }
