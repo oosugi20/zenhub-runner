@@ -20,6 +20,7 @@ exports.handler = async function(argv) {
   const urls = await fetchUrls();
   cliSpinner.stop(true);
 
+  // TODO なかったときのログと処理
   console.log(chalk.bold('=== No estimate issues ============================'));
   urls.forEach(function(url) {
     console.log(chalk.blue(url));
