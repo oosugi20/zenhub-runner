@@ -9,13 +9,17 @@ const runner = require('../main.js');
 const UPDATE_KEY = '[UPDATE]';
 const QUIT_KEY = '[QUIT]';
 
-exports.command = 'check-no-estimate-issues <ownerName> <repoName>';
+exports.command = 'check-no-estimate-issues <repoPath>';
 exports.desc = 'estimateが設定されていないIssueがないか確認する';
 exports.builder = {};
 exports.handler = async function(argv) {
   const cliSpinner = new CliSpinner('%s processing...');
   cliSpinner.setSpinnerString('⢹⢺⢼⣸⣇⡧⡗⡏');
   cliSpinner.start();
+
+  const repoPathArr = argv.repoPath.split('/')
+  const ownerName = repoPathArr[0];
+  const repoName = repoPathArr[1];
 
   const urls = await fetchUrls();
   cliSpinner.stop(true);
@@ -32,7 +36,7 @@ exports.handler = async function(argv) {
 
 
   async function fetchUrls() {
-    const filteredIssues = await runner.noEstimateIssues(argv.ownerName, argv.repoName);
+    const filteredIssues = await runner.noEstimateIssues(ownerName, repoName);
     return _.map(filteredIssues, (issue) => issue.getHtmlUrl());
   }
 

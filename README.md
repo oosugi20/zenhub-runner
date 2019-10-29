@@ -11,11 +11,10 @@ ZenHubで運用していく上でのタスクランナー。
 ## check-no-estimate-issues
 
 ```
-$ zenhub-runner check-no-estimate-issues <ownerName> <repoName>
+$ zenhub-runner check-no-estimate-issues <repoPath>
 ```
 
-- `<ownerName>` - Organizationやユーザー名。 ex. oosugi20/zenhub-runner の oosugi20
-- `<repoName>` - リポジトリ名。 ex. oosugi20/zenhub-runner の zenhub-runner
+- `<repoPath>` - GitHubリポジトリのパス ex. `oosugi20/zenhub-runner`
 
 月内にcloseしたけど、estimateが付いていないIssueを確認し、
 見つかったIssueのURLを一覧で吐き出す。
@@ -41,9 +40,8 @@ cli上では、続けて次のURLを選ぶことが可能。
 $ zenhub-runner cleanup-monthly-epic <ownerName> <repoName> <issueNumber>
 ```
 
-- `<ownerName>` - Organizationやユーザー名。 ex. oosugi20/zenhub-runner の oosugi20
-- `<repoName>` - リポジトリ名。 ex. oosugi20/zenhub-runner の zenhub-runner
-- `<issueNumber>` - 整理したい月時まとめEpicのissue number（Githubの `#000` の数字部分）
+- `<repoPath>` - GitHubリポジトリのパス ex. `oosugi20/zenhub-runner`
+- `<issueNumber>` - 整理したい月時まとめEpicのissue number（GithubのIssueの `#000`）。`#`の有無は問わない。
 
 前提として、本来の作業用のIssueやEpicとは別に、その月に消化したIssueをまとめておくEpicを作って運用している。
 Issueをcloseするときに、この月時まとめEpicの子としてcloseするIssueを関連付ける。

@@ -1,7 +1,7 @@
 const CliSpinner = require('cli-spinner').Spinner;
 const runner = require('../main.js');
 
-exports.command = 'cleanup-monthly-epic <ownerName> <repoName> <issueNumber>';
+exports.command = 'cleanup-monthly-epic <repoPath> <issueNumber>';
 exports.desc = '月時まとめEpicを整理する';
 exports.builder = {};
 exports.handler = async function(argv) {
@@ -9,10 +9,15 @@ exports.handler = async function(argv) {
   cliSpinner.setSpinnerString('⢹⢺⢼⣸⣇⡧⡗⡏');
   cliSpinner.start();
 
+  const repoPathArr = argv.repoPath.split('/')
+  const ownerName = repoPathArr[0];
+  const repoName = repoPathArr[1];
+  const issueNumber = parseInt(argv.issueNumber.replace(/^#/, ''), 10);
+
   const results = await runner.cleanupMonthlyEpic(
-    argv.ownerName,
-    argv.repoName,
-    argv.issueNumber
+    ownerName,
+    repoName,
+    issueNumber
   );
 
   cliSpinner.stop(true);
@@ -23,8 +28,8 @@ exports.handler = async function(argv) {
   }
 
   console.log(`
-以下のIssueは、月時まとめEpic #${argv.issueNumber} 内のcloseされた子Epicに含まれるため、
-#${argv.issueNumber}への関連付けを外しました。
+以下のIssueは、月時まとめEpic #${issueNumber} 内のcloseされた子Epicに含まれるため、
+#${issueNumber}への関連付けを外しました。
 `);
 
   results.forEach(function(result) {
