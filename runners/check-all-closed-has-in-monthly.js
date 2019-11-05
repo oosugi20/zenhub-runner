@@ -14,8 +14,15 @@ module.exports = async function(ownerName, repoName, issueNumber) {
   const results = [];
 
   closedIssues.forEach(function(issue, index) {
-    const isIncludes = _.some(childs, (child) => child.getId() === issue.getId());
-    if (isIncludes) {
+    const isIncludes = _.some(childs, (child) => {
+      // TODO 月次Issueに紐づけているけど、先月closeしたものだったりした場合の対策
+      if (!child || !issue) {
+        return false;
+      }
+      return child.getId() === issue.getId()
+    });
+
+    if (!isIncludes) {
       results.push(issue);
     }
   });
